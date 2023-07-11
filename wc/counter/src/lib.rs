@@ -7,9 +7,17 @@ pub fn line_count(input: &str) -> usize {
     1 + input.matches('\n').count()
 }
 
+/// The `word_count` function returns the amount of words in the input string.
+///
+/// Words are seperated with a whitespace character,
+/// meaning `Hello!` is a single word, while `Hello !` represents two words.
+pub fn word_count(input: &str) -> usize {
+    input.split_whitespace().count()
+}
+
 #[cfg(test)]
 mod unit_tests {
-    use crate::line_count;
+    use crate::{line_count, word_count};
 
     #[test]
     fn lines() {
@@ -18,13 +26,29 @@ mod unit_tests {
         let actual = line_count(input);
         assert_eq!(actual, expected);
     }
+
+    #[test]
+    fn words() {
+        let input = "Hello, world! How are you feeling today?";
+        let expected = 7;
+        let actual = word_count(input);
+        assert_eq!(actual, expected);
+    }
 }
 
 #[cfg(test)]
 mod file_tests {
     use std::fs::read_to_string;
 
-    use crate::line_count;
+    use crate::{line_count, word_count};
+
+    #[test]
+    fn words() {
+        let input = read_to_string("test.txt").expect("should find test file");
+        let expected = 58159;
+        let actual = word_count(input.as_str());
+        assert_eq!(actual, expected);
+    }
 
     #[test]
     fn lines() {
