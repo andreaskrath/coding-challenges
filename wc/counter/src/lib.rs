@@ -38,9 +38,8 @@ mod unit_tests {
 
 #[cfg(test)]
 mod file_tests {
-    use std::fs::read_to_string;
-
     use crate::{line_count, word_count};
+    use std::fs::read_to_string;
 
     #[test]
     fn words() {
