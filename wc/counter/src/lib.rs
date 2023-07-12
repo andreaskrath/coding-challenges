@@ -33,12 +33,18 @@ pub fn word_count(input: &str) -> usize {
 /// The `byte_count` function returns the amount of bytes in the input string.
 ///
 /// # Examples
-/// For ASCII characters, a character is the size of a byte, meaning the amount
+/// ASCII characters are the same size as a byte, meaning the amount
 /// of bytes is equal to the length of the string.
 /// ```
 /// # use counter::byte_count;
 /// let byte_amount = byte_count("Hello, how are you doing?");
 /// assert_eq!(byte_amount, 25);
+/// ```
+/// However, for non-ASCII characters, this is not the case.
+/// ```
+/// # use counter::byte_count;
+/// let byte_amount = byte_count("ø");
+/// assert_eq!(byte_amount, 2);
 /// ```
 pub fn byte_count(input: &str) -> usize {
     input.len()
