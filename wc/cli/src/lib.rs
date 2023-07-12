@@ -30,18 +30,24 @@ impl Args {
         Args::parse()
     }
 
+    /// A getter for the `bytes` CLI flag.
     pub fn bytes(&self) -> bool {
         self.bytes
     }
 
+    /// A getter for the `words` CLI flag.
     pub fn words(&self) -> bool {
         self.words
     }
 
+    /// A getter for the `lines` CLI flag.
     pub fn lines(&self) -> bool {
         self.lines
     }
 
+    /// A getter for the file names passed as command line arguments.
+    /// 
+    /// **It is not validated whether the file names refer to valid files.**
     pub fn files(&self) -> &Vec<String> {
         &self.files
     }
