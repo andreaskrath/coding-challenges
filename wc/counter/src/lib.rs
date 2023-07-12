@@ -18,6 +18,14 @@ pub fn line_count(input: &str) -> usize {
 ///
 /// Words are seperated with a whitespace character,
 /// meaning `Hello!` is a single word, while `Hello !` represents two words.
+///
+/// # Examples
+/// ```
+/// # use counter::word_count;
+/// // newline counts as whitespace
+/// let word_amount = word_count("Hello!\nHow are you doing?");
+/// assert_eq!(word_amount, 5);
+/// ```
 pub fn word_count(input: &str) -> usize {
     input.split_whitespace().count()
 }
