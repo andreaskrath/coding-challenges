@@ -3,6 +3,10 @@ use clap::Parser;
 #[derive(Parser, Debug)]
 #[command(name = "rswc", author = "Andreas Krath <andreas.krath@gmail.com>")]
 /// A Rust rewrite of the Unix CLI tool 'wc'.
+///
+/// Print newline, word, and byte counts for each file, and a total line if more than one file is specified.
+///
+/// A word is a non-zero-length sequence of printable chracters delimited by whitespace.
 pub struct Args {
     /// The file name(s) to be affected by the tool
     files: Vec<String>,
