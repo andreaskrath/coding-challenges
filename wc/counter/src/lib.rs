@@ -1,3 +1,5 @@
+//! The `counter` crate provides functionality for counting bytes, lines and words of an input string.
+
 /// The `line_count` function returns the amount of lines in the input string.
 ///
 /// Newlines are defined with the newline character `\n`.
