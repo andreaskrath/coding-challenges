@@ -58,3 +58,86 @@ impl Args {
         &self.files
     }
 }
+
+// The 0th argument does not matter, but it must be present for parsing to function accordingly.
+// During execution the 0th argument is typically the name of the binary.
+#[cfg(test)]
+mod args_cli {
+    use crate::Args;
+    use clap::Parser;
+
+    #[test]
+    // If this test case fails, then all other test cases relating the CLI cannot be considered trustworthy
+    fn default_values() {
+        let args = Args::parse_from([""]);
+        assert!(!args.bytes);
+        assert!(!args.words);
+        assert!(!args.lines);
+        assert!(args.files.is_empty())
+    }
+
+    #[test]
+    fn bytes_short_flag() {
+        let args = Args::parse_from(["", "-c"]);
+        assert!(args.bytes);
+    }
+
+    #[test]
+    fn bytes_long_flag() {
+        let args = Args::parse_from(["", "--bytes"]);
+        assert!(args.bytes);
+    }
+
+    #[test]
+    fn words_short_flag() {
+        let args = Args::parse_from(["", "-w"]);
+        assert!(args.words);
+    }
+
+    #[test]
+    fn words_long_flag() {
+        let args = Args::parse_from(["", "--words"]);
+        assert!(args.words);
+    }
+
+    #[test]
+    fn lines_short_flag() {
+        let args = Args::parse_from(["", "-l"]);
+        assert!(args.lines);
+    }
+
+    #[test]
+    fn lines_long_flag() {
+        let args = Args::parse_from(["", "--lines"]);
+        assert!(args.lines);
+    }
+
+    #[test]
+    fn multiple_flags() {
+        let args = Args::parse_from(["", "-c", "-l", "-w"]);
+        assert!(args.bytes);
+        assert!(args.lines);
+        assert!(args.words);
+    }
+
+    #[test]
+    fn single_file() {
+        let args = Args::parse_from(["", "file.txt"]);
+        assert_eq!(args.files, ["file.txt"]);
+    }
+
+    #[test]
+    fn multiple_files() {
+        let args = Args::parse_from(["", "file.txt", "another_file.rs"]);
+        assert_eq!(args.files, ["file.txt", "another_file.rs"]);
+    }
+
+    #[test]
+    fn flags_and_files() {
+        let args = Args::parse_from(["", "-c", "-w", "-l", "file.txt", "newfile.txt", "main.rs"]);
+        assert_eq!(args.files, ["file.txt", "newfile.txt", "main.rs"]);
+        assert!(args.bytes);
+        assert!(args.words);
+        assert!(args.lines);
+    }
+}
