@@ -8,6 +8,7 @@ use clap::Parser;
     about = "A Rust rewrite of the Unix CLI tool 'wc'."
 )]
 pub struct Args {
+    /// F
     files: Vec<String>,
 
     #[arg(short = 'c', long = "bytes")]
@@ -46,7 +47,7 @@ impl Args {
     }
 
     /// A getter for the file names passed as command line arguments.
-    /// 
+    ///
     /// **It is not validated whether the file names refer to valid files.**
     pub fn files(&self) -> &Vec<String> {
         &self.files
