@@ -22,6 +22,10 @@ pub struct Args {
 }
 
 impl Args {
+    /// The `get_args` function parses command line arguments from
+    /// `std::env::args_os()`, and returns an instance of `Args`
+    /// containing the parsed command line arguments, reacheable
+    /// via their appropriate getters.
     pub fn get_args() -> Self {
         Args::parse()
     }
@@ -36,5 +40,9 @@ impl Args {
 
     pub fn lines(&self) -> bool {
         self.lines
+    }
+
+    pub fn files(&self) -> &Vec<String> {
+        &self.files
     }
 }
