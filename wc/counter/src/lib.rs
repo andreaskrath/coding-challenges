@@ -3,6 +3,13 @@
 /// The `line_count` function returns the amount of lines in the input string.
 ///
 /// Newlines are defined with the newline character `\n`.
+///
+/// # Examples
+/// ```
+/// # use counter::line_count;
+/// let line_amount = line_count("Hello!\nHow are you doing?");
+/// assert_eq!(line_amount, 2);
+/// ```
 pub fn line_count(input: &str) -> usize {
     input.lines().count()
 }
