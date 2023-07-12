@@ -81,6 +81,7 @@ mod unit_tests {
     #[case("Hello, world! How are you feeling today?", 40)]
     #[case(" ", 1)]
     #[case("\n\n\n", 3)]
+    #[case("æøå", 6)]
     fn bytes(#[case] input: &str, #[case] expected: usize) {
         let actual = byte_count(input);
         assert_eq!(actual, expected);
