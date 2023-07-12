@@ -25,4 +25,16 @@ impl Args {
     pub fn get_args() -> Self {
         Args::parse()
     }
+
+    pub fn bytes(&self) -> bool {
+        self.bytes
+    }
+
+    pub fn words(&self) -> bool {
+        self.words
+    }
+
+    pub fn lines(&self) -> bool {
+        self.lines
+    }
 }
