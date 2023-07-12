@@ -1,2 +1,2 @@
 [workspace]
-members = ["main", "counter"]
+members = ["main", "counter", "cli"]
