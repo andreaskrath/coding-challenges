@@ -1,5 +1,5 @@
 # Overview
 
-|Directory|Challenge|Status|
-|:-:|:-:|:-:|
-|[wc](wc)|https://codingchallenges.fyi/challenges/challenge-wc/|Under Development|
+|Nr.|Directory|Challenge|Status|
+|:-:|:-:|:-:|:-:|
+|1|[wc](wc)|https://codingchallenges.fyi/challenges/challenge-wc/|Under Development|
