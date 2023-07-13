@@ -1,16 +1,23 @@
-use clap::Parser;
+use clap::{Args, Parser};
 
-#[derive(Parser, Debug)]
+#[derive(Parser)]
 #[command(name = "rswc", author = "Andreas Krath <andreas.krath@gmail.com>")]
 /// A Rust rewrite of the Unix CLI tool 'wc'.
 ///
 /// Print newline, word, and byte counts for each file, and a total line if more than one file is specified.
 ///
 /// A word is a non-zero-length sequence of printable chracters delimited by whitespace.
-pub struct Args {
+pub struct Cli {
     /// The file name(s) to be affected by the tool
     files: Vec<String>,
 
+    #[command(flatten)]
+    flags: Flags,
+}
+
+#[derive(Args)]
+#[group(required = true, multiple = true)]
+struct Flags {
     #[arg(short = 'c', long = "bytes")]
     /// Print the byte count
     bytes: bool,
@@ -22,32 +29,32 @@ pub struct Args {
     lines: bool,
 }
 
-impl Args {
+impl Cli {
     #[inline]
     /// The `get_args` function parses command line arguments from
     /// `std::env::args_os()`, and returns an instance of `Args`
     /// containing the parsed command line arguments, reacheable
     /// via their appropriate getters.
     pub fn get_args() -> Self {
-        Args::parse()
+        Cli::parse()
     }
 
     #[inline]
     /// A getter for the `bytes` CLI flag.
     pub fn bytes(&self) -> bool {
-        self.bytes
+        self.flags.bytes
     }
 
     #[inline]
     /// A getter for the `words` CLI flag.
     pub fn words(&self) -> bool {
-        self.words
+        self.flags.words
     }
 
     #[inline]
     /// A getter for the `lines` CLI flag.
     pub fn lines(&self) -> bool {
-        self.lines
+        self.flags.lines
     }
 
     #[inline]
@@ -63,81 +70,73 @@ impl Args {
 // During execution the 0th argument is typically the name of the binary.
 #[cfg(test)]
 mod args_cli {
-    use crate::Args;
+    use crate::Cli;
     use clap::Parser;
 
     #[test]
-    // If this test case fails, then all other test cases relating the CLI cannot be considered trustworthy
-    fn default_values() {
-        let args = Args::parse_from([""]);
-        assert!(!args.bytes);
-        assert!(!args.words);
-        assert!(!args.lines);
-        assert!(args.files.is_empty())
-    }
-
-    #[test]
     fn bytes_short_flag() {
-        let args = Args::parse_from(["", "-c"]);
-        assert!(args.bytes);
+        let args = Cli::parse_from(["", "-c"]);
+        assert!(args.flags.bytes);
     }
 
     #[test]
     fn bytes_long_flag() {
-        let args = Args::parse_from(["", "--bytes"]);
-        assert!(args.bytes);
+        let args = Cli::parse_from(["", "--bytes"]);
+        assert!(args.flags.bytes);
     }
 
     #[test]
     fn words_short_flag() {
-        let args = Args::parse_from(["", "-w"]);
-        assert!(args.words);
+        let args = Cli::parse_from(["", "-w"]);
+        assert!(args.flags.words);
     }
 
     #[test]
     fn words_long_flag() {
-        let args = Args::parse_from(["", "--words"]);
-        assert!(args.words);
+        let args = Cli::parse_from(["", "--words"]);
+        assert!(args.flags.words);
     }
 
     #[test]
     fn lines_short_flag() {
-        let args = Args::parse_from(["", "-l"]);
-        assert!(args.lines);
+        let args = Cli::parse_from(["", "-l"]);
+        assert!(args.flags.lines);
     }
 
     #[test]
     fn lines_long_flag() {
-        let args = Args::parse_from(["", "--lines"]);
-        assert!(args.lines);
+        let args = Cli::parse_from(["", "--lines"]);
+        assert!(args.flags.lines);
     }
 
     #[test]
     fn multiple_flags() {
-        let args = Args::parse_from(["", "-c", "-l", "-w"]);
-        assert!(args.bytes);
-        assert!(args.lines);
-        assert!(args.words);
+        let args = Cli::parse_from(["", "-c", "-l", "-w"]);
+        assert!(args.flags.bytes);
+        assert!(args.flags.lines);
+        assert!(args.flags.words);
     }
 
     #[test]
     fn single_file() {
-        let args = Args::parse_from(["", "file.txt"]);
+        // flag is not important, but must be present
+        let args = Cli::parse_from(["", "-c", "file.txt"]);
         assert_eq!(args.files, ["file.txt"]);
     }
 
     #[test]
     fn multiple_files() {
-        let args = Args::parse_from(["", "file.txt", "another_file.rs"]);
+        // flag is not important, but must be present
+        let args = Cli::parse_from(["", "-c", "file.txt", "another_file.rs"]);
         assert_eq!(args.files, ["file.txt", "another_file.rs"]);
     }
 
     #[test]
     fn flags_and_files() {
-        let args = Args::parse_from(["", "-c", "-w", "-l", "file.txt", "newfile.txt", "main.rs"]);
+        let args = Cli::parse_from(["", "-c", "-w", "-l", "file.txt", "newfile.txt", "main.rs"]);
         assert_eq!(args.files, ["file.txt", "newfile.txt", "main.rs"]);
-        assert!(args.bytes);
-        assert!(args.words);
-        assert!(args.lines);
+        assert!(args.flags.bytes);
+        assert!(args.flags.words);
+        assert!(args.flags.lines);
     }
 }
