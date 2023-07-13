@@ -2,4 +2,4 @@
 
 |Directory|Challenge|Status|
 |-|-|-|
-|wc|https://codingchallenges.fyi/challenges/challenge-wc/|Under Development|
+|[wc](wc)|https://codingchallenges.fyi/challenges/challenge-wc/|Under Development|
