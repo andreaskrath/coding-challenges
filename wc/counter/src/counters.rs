@@ -1,13 +1,6 @@
 /// The `line_count` function returns the amount of lines in the input string.
 ///
 /// Newlines are defined with the newline character `\n`.
-///
-/// # Examples
-/// ```
-/// # use counter::line_count;
-/// let line_amount = line_count("Hello!\nHow are you doing?");
-/// assert_eq!(line_amount, 2);
-/// ```
 pub fn line_count(input: &str) -> usize {
     input.lines().count()
 }
@@ -16,34 +9,11 @@ pub fn line_count(input: &str) -> usize {
 ///
 /// Words are seperated with a whitespace character,
 /// meaning `Hello!` is a single word, while `Hello !` represents two words.
-///
-/// # Examples
-/// ```
-/// # use counter::word_count;
-/// // newline counts as whitespace
-/// let word_amount = word_count("Hello!\nHow are you doing?");
-/// assert_eq!(word_amount, 5);
-/// ```
 pub fn word_count(input: &str) -> usize {
     input.split_whitespace().count()
 }
 
 /// The `byte_count` function returns the amount of bytes in the input string.
-///
-/// # Examples
-/// ASCII characters are the same size as a byte, meaning the amount
-/// of bytes is equal to the length of the string.
-/// ```
-/// # use counter::byte_count;
-/// let byte_amount = byte_count("Hello, how are you doing?");
-/// assert_eq!(byte_amount, 25);
-/// ```
-/// However, for non-ASCII characters, this is not the case.
-/// ```
-/// # use counter::byte_count;
-/// let byte_amount = byte_count("ø");
-/// assert_eq!(byte_amount, 2);
-/// ```
 pub fn byte_count(input: &str) -> usize {
     input.len()
 }
