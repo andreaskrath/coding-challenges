@@ -2,13 +2,13 @@
 
 mod counters;
 
-use cli::Args;
+use cli::Cli;
 use counters::{byte_count, line_count, word_count};
 
 /// The `run` function runs the program in its entirety, parsing command line arguments,
 /// performing the specified tasks and printing to the user.
 pub fn run() {
-    let args = Args::get_args();
+    let args = Cli::get_args();
 
     let mut file_table = Vec::new();
     for file_path in args.files() {
