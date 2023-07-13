@@ -16,7 +16,7 @@ pub fn run() {
         let file_content = match std::fs::read_to_string(file_path) {
             Ok(fc) => fc,
             Err(e) => {
-                println!("{file_path}: {e}");
+                println!("rswc: {file_path}: {e}");
                 continue;
             }
         };
@@ -34,40 +34,41 @@ pub fn run() {
         file_table.push(new_line);
     }
 
-    if file_table.len() > 1 {
-        let mut max_length = 0;
-        let mut total = PrintLine::new("total");
-        if args.lines() {
-            let mut total_lines = 0;
+    match file_table.len() {
+        0 => {}
+        1 => println!("{}", file_table[0].format(0)),
+        _ => {
+            let mut total = PrintLine::new("total");
             for file in file_table.iter() {
-                total_lines += file.lines.unwrap();
+                if args.lines() {
+                    total.lines = combine(total.lines, file.lines);
+                }
+                if args.words() {
+                    total.words = combine(total.words, file.words);
+                }
+                if args.bytes() {
+                    total.bytes = combine(total.bytes, file.bytes);
+                }
             }
-            max_length = max_length.max(total_lines.to_string().len());
-            total.lines = Some(total_lines);
-        }
-        if args.words() {
-            let mut total_words = 0;
-            for file in file_table.iter() {
-                total_words += file.words.unwrap();
-            }
-            max_length = max_length.max(total_words.to_string().len());
-            total.words = Some(total_words);
-        }
-        if args.bytes() {
-            let mut total_bytes = 0;
-            for file in file_table.iter() {
-                total_bytes += file.bytes.unwrap();
-            }
-            max_length = max_length.max(total_bytes.to_string().len());
-            total.bytes = Some(total_bytes);
-        }
-        file_table.push(total);
 
-        for line in file_table {
-            println!("{}", line.format(max_length));
+            let max_length = (total.lines.max(total.words).max(total.bytes))
+                .unwrap()
+                .to_string()
+                .len();
+
+            file_table.push(total);
+            for line in file_table {
+                println!("{}", line.format(max_length));
+            }
         }
-    } else {
-        println!("{}", file_table[0].format(0));
+    }
+}
+
+fn combine(first: Option<usize>, second: Option<usize>) -> Option<usize> {
+    match (first, second) {
+        (None, None) => None,
+        (None, Some(a)) | (Some(a), None) => Some(a),
+        (Some(a), Some(b)) => Some(a + b),
     }
 }
 
